@@ -61,7 +61,7 @@ describe('fetchEvent', () => {
 
   it('throws an error for an invalid URL', async () => {
     const errorMessage =
-      'Error fetching event, make sure your URL is correct and the event is accessible to the public.';
+      'Error fetching event, make sure your URL is correct and the event is accessible. For private events, provide Facebook cookies via the cookies option.';
     mockedAxios.get.mockRejectedValueOnce(new Error(errorMessage));
 
     await expect(fetchEvent('invalid-url')).rejects.toThrow(errorMessage);

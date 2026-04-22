@@ -96,10 +96,33 @@ export interface EventCategory {
   url: string;
 }
 
+export interface FacebookCookies {
+  /** The c_user cookie value (your Facebook user ID) */
+  // eslint-disable-next-line camelcase
+  c_user: string;
+  /** The xs cookie value (session token) */
+  xs: string;
+  /** Any additional cookies as key-value pairs */
+  [key: string]: string;
+}
+
 export type ScrapeOptions = Pick<
   AxiosRequestConfig,
   'proxy' | 'httpAgent' | 'httpsAgent'
->;
+> & {
+  /**
+   * Facebook cookies for authenticated scraping of private events.
+   * Accepts either a FacebookCookies object or a raw cookie string.
+   *
+   * @example
+   * // Object form (recommended)
+   * { cookies: { c_user: '123456', xs: 'abc123' } }
+   *
+   * // Raw string form
+   * { cookies: 'c_user=123456; xs=abc123' }
+   */
+  cookies?: FacebookCookies | string;
+};
 
 export interface ShortEventData {
   id: string;
