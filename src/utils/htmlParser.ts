@@ -87,7 +87,9 @@ export const getBasicData = (
           id: sibling.id,
           startTimestamp: sibling.start_timestamp,
           endTimestamp: sibling.end_timestamp,
-          parentEvent: { id: sibling.parent_event.id }
+          parentEvent: sibling.parent_event
+            ? { id: sibling.parent_event.id }
+            : null
         })
       ) ?? [],
     // If parent exists, and its not the same as the current event, set the parentEvent field
