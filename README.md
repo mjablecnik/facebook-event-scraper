@@ -12,7 +12,8 @@ A slim module for scraping Facebook event data in milliseconds.
   - [Scrape event](#scrape-event)
   - [Multi-date events](#multi-date-events)
   - [Scrape hosted event lists](#scrape-hosted-event-lists)
-  - [Using a proxy](#using-a-proxy)
+  - [Using cookies](#using-cookies)
+- [Using a proxy](#using-a-proxy)
 - [Limitations](#limitations)
 
 <!-- TOC end -->
@@ -225,8 +226,51 @@ async function example() {
 }
 ```
 
+### Using cookies
+
+To scrape private or restricted events, you can provide your Facebook cookies. This allows the scraper to make authenticated requests.
+
+To get your cookies:
+
+1. Open Facebook in your browser (logged in)
+2. Open DevTools → Application → Cookies → `https://www.facebook.com`
+3. Copy the values of `c_user` and `xs`
+
+```javascript
+import {
+  scrapeFbEvent,
+  scrapeFbEventList,
+  EventType
+} from 'facebook-event-scraper';
+
+// Using an object (recommended)
+const eventData = await scrapeFbEvent(
+  'https://www.facebook.com/events/1234567890',
+  {
+    cookies: { c_user: '1234567890', xs: 'your-xs-value' }
+  }
+);
+
+// Using a raw string
+const eventData2 = await scrapeFbEvent(
+  'https://www.facebook.com/events/1234567890',
+  {
+    cookies: 'c_user=1234567890; xs=your-xs-value'
+  }
+);
+
+// Works with event lists too
+const events = await scrapeFbEventList(
+  'https://www.facebook.com/some-page/events',
+  EventType.Upcoming,
+  { cookies: { c_user: '1234567890', xs: 'your-xs-value' } }
+);
+```
+
+Note: Cookies expire periodically and will need to be refreshed. Avoid making too many requests in a short time to reduce the risk of account restrictions.
+
 ## Limitations
 
-Since this package does not use authentication, it only works for public Facebook event pages.
+Since this package does not use authentication by default, it only works for public Facebook event pages. To access private or restricted events, provide your Facebook cookies via the `cookies` option.
 
 Additionally, Facebook's terms of service prohibit automated scraping of their website. Use this package at your own risk.

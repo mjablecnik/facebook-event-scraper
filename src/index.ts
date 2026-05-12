@@ -5,13 +5,18 @@ import {
   validateAndFormatEventProfileUrl,
   validateAndFormatUrl
 } from './utils/url';
-import { EventData, ScrapeOptions, ShortEventData } from './types';
+import {
+  EventData,
+  FacebookCookies,
+  ScrapeOptions,
+  ShortEventData
+} from './types';
 import * as eventListParser from './utils/eventListParser';
 import { scrapeEvent } from './scraper';
 import { fetchEvent } from './utils/network';
 import { EventType } from './enums';
 
-export { EventData, ScrapeOptions, ShortEventData, EventType };
+export { EventData, FacebookCookies, ScrapeOptions, ShortEventData, EventType };
 
 export const scrapeFbEvent = async (
   url: string,
