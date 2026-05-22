@@ -1,5 +1,7 @@
 import { EventType } from '../enums';
 
+export const isShareUrl = (url: string): boolean => /facebook\.com\/share\//.test(url);
+
 export const fbidToUrl = (fbid: string) => {
   if (!fbid.match(/^[0-9]{8,}$/)) {
     throw new Error('Invalid FB ID');

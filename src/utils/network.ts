@@ -3,11 +3,48 @@ import { FacebookCookies, ScrapeOptions } from '../types';
 
 const formatCookies = (cookies: FacebookCookies | string): string => {
   if (typeof cookies === 'string') {
-return cookies;
-}
+    return cookies;
+  }
   return Object.entries(cookies)
     .map(([key, value]) => `${key}=${value}`)
     .join('; ');
+};
+
+export const resolveRedirectUrl = async (
+  url: string,
+  options?: ScrapeOptions
+): Promise<string> => {
+  try {
+    const { cookies, ...axiosOptions } = options || {};
+
+    const headers: Record<string, string> = {
+      'user-agent':
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'
+    };
+
+    if (cookies) {
+      headers.cookie = formatCookies(cookies);
+    }
+
+    const response = await axios.get(url, {
+      headers,
+      maxRedirects: 10,
+      ...axiosOptions
+    });
+
+    const finalUrl: string | undefined =
+      response.request?.res?.responseUrl ?? response.config.url;
+
+    if (!finalUrl) {
+      throw new Error('Could not resolve Facebook share URL');
+    }
+
+    return finalUrl;
+  } catch (err: any) {
+    throw new Error(
+      'Could not resolve Facebook share URL. Make sure the URL is correct and accessible.'
+    );
+  }
 };
 
 export const fetchEvent = async (url: string, options?: ScrapeOptions) => {
