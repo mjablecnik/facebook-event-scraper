@@ -19,6 +19,24 @@ describe('isShareUrl', () => {
     ).toBe(true);
   });
 
+  it('returns true for a post share URL', () => {
+    expect(isShareUrl('https://www.facebook.com/share/p/18f2uMn71o/')).toBe(
+      true
+    );
+  });
+
+  it('returns true for a video share URL', () => {
+    expect(isShareUrl('https://www.facebook.com/share/v/18f2uMn71o/')).toBe(
+      true
+    );
+  });
+
+  it('returns true for a reel share URL', () => {
+    expect(isShareUrl('https://www.facebook.com/share/r/18f2uMn71o/')).toBe(
+      true
+    );
+  });
+
   it('returns false for a regular event URL', () => {
     expect(isShareUrl('https://www.facebook.com/events/1234567890/')).toBe(
       false
